@@ -1,4 +1,5 @@
 # Sign up API
+[![Build Status](https://travis-ci.com/lericardolima/sign-up.svg?branch=feature%2Farchitecture)](https://travis-ci.com/lericardolima/sign-up)
 
 RESTful API for users sign up. This project was created to practice backend development skills.
 
