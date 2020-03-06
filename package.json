@@ -4,7 +4,7 @@
   "description": "RESTful API for users sign up.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/lericardolima/sign-up/issues"
   },
-  "homepage": "https://github.com/lericardolima/sign-up#readme"
+  "homepage": "https://github.com/lericardolima/sign-up#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.2"
+  }
 }
