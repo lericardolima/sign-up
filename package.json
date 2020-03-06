@@ -1,0 +1,19 @@
+{
+  "name": "sign-up",
+  "version": "1.0.0",
+  "description": "RESTful API for users sign up.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lericardolima/sign-up.git"
+  },
+  "author": "Ricardo Rocha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lericardolima/sign-up/issues"
+  },
+  "homepage": "https://github.com/lericardolima/sign-up#readme"
+}
