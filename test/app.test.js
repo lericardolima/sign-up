@@ -1,20 +1,19 @@
-const request = require('supertest');
-const app = require('../app');
+const chai = require("chai");
+const chaiHttp = require("chai-http");
+const app = require("../app");
+const should = chai.should();
 
-beforeAll(async () => {
-    console.log('Launching Sign up app tests.');
-});
+chai.use(chaiHttp);
 
-afterAll(() => {
-    console.log('Sign up tests finished.');
-});
-
-describe('Hello world!!', () => {
-
-    test('Expect response to contain message: Hello world!!', async () => {
-        const response = await request(app).get('/api');
-        expect(response.status).toEqual(200);
-        expect(response.text).toContain('Hello world!!');
-  
-     });
+describe("GET Hello world!!", () => {
+  it("Should show message Hello world!!", (done) => {
+    chai
+      .request(app)
+      .get("/api")
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.text.should.be.equal('Hello world!!');
+        done();
+      });
+  });
 });
