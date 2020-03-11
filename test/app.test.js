@@ -1,35 +1,35 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
-const should = chai.should();
+
+chai.should();
+chai.use(chaiHttp);
 
 const HelloWorld = require('../src/models/hello-world.model');
 
-chai.use(chaiHttp);
-
-beforeEach(done => {
+beforeEach((done) => {
   new HelloWorld()
-    .save((err, res) => {
-      done();
-  });
+      .save((err, res) => {
+        done();
+      });
 });
 
-afterEach(done => {
+afterEach((done) => {
   HelloWorld
-    .deleteMany({}, (err, res) => {
-      done();
-  });
+      .deleteMany({}, (err, res) => {
+        done();
+      });
 });
 
 describe('GET Hello world!!', () => {
-  it('Should show message Hello world!!', done => {
+  it('Should show message Hello world!!', (done) => {
     chai
-      .request(app)
-      .get('/api/hello-world')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.text.should.be.equal('Hello world!!');
-        done();
-      });
+        .request(app)
+        .get('/api/hello-world')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.text.should.be.equal('Hello world!!');
+          done();
+        });
   });
 });
