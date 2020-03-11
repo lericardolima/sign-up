@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('../config/db.config');
 
 const HelloWorldSchema = new mongoose.Schema({
   message: {

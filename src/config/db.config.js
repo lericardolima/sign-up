@@ -5,3 +5,5 @@ mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }, console.debug('MongoDB connected'));
+
+module.exports = mongoose;
