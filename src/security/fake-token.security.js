@@ -3,7 +3,7 @@ const fs = require('file-system');
 
 const privateKey = fs.readFileSync('./.private.key', 'utf8');
 const fakeToken = jwt.sign({id: 123}, privateKey, {
-  expiresIn: 3,
+  expiresIn: 30,
   algorithm: 'RS256',
 });
 
