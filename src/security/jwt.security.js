@@ -82,7 +82,7 @@ exports.authenticate = (req, res, next) => {
       {algorithm: [TOKEN_ALGORITHM_RS256]},
       (err, decoded) => {
         if (err) {
-          return res.status(500).send({auth: false, message: 'Invalid token.'});
+          return res.status(401).send({auth: false, message: 'Invalid token.'});
         }
 
         next();
