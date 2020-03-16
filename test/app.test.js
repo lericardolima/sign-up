@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
-const fakeToken = require('../src/security/fake-token.security');
+const token = require('../src/security/jwt.security').genToken(123);
 const HelloWorld = require('../src/models/hello-world.model');
 
 chai.should();
@@ -26,7 +26,7 @@ describe('GET Hello world!!', () => {
     chai
         .request(app)
         .get('/api/hello-world')
-        .set('x-access-token', fakeToken)
+        .set('Authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.text.should.be.equal('Hello world!!');

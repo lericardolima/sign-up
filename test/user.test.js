@@ -3,7 +3,7 @@ const chaiHttp = require('chai-http');
 const app = require('../app');
 const bcrypt = require('bcrypt');
 const SALT_RANDS = 12;
-const token = require('../src/security/fake-token.security');
+const token = require('../src/security/jwt.security').genToken(123);
 
 chai.should();
 chai.use(chaiHttp);
@@ -75,7 +75,7 @@ describe('GET /users/:id', () => {
     chai
         .request(app)
         .get(`/api/users/${userId}`)
-        .set('x-access-token', token)
+        .set('Authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
