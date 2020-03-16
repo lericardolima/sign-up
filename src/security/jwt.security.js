@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
 
 const TOKEN_EXPIRATION_TIME = 300;
-const TOKEN_ALGORITHM_RS256 = 'RS256';
+const TOKEN_ALGORITHM = 'RS256';
 const SALT_RANDS = 12;
 
 exports.register = (req, res) => {
@@ -24,13 +24,7 @@ exports.register = (req, res) => {
                 .send('Something wrong happened. We\'re sorry!');
           }
 
-          const id = user.id;
-          const privateKey = fs.readFileSync('./.private.key', 'utf8');
-          const token = jwt.sign({id}, privateKey, {
-            expiresIn: TOKEN_EXPIRATION_TIME,
-            algorithm: TOKEN_ALGORITHM_RS256,
-          });
-
+          const token = this.genToken(user.id);
           return res.status(201).send({
             id: user.id,
             created_at: user.created_at,
@@ -56,20 +50,14 @@ exports.login = (req, res) => {
         return res.status(400).send('Incorrect password');
       }
 
-      const id = user.id;
-      const privateKey = fs.readFileSync('./.private.key', 'utf8');
-      const token = jwt.sign({id}, privateKey, {
-        expiresIn: TOKEN_EXPIRATION_TIME,
-        algorithm: TOKEN_ALGORITHM_RS256,
-      });
-
+      const token = this.genToken(user.id);
       return res.status(200).send({auth: true, token: token});
     });
   });
 };
 
 exports.authenticate = (req, res, next) => {
-  const token = req.headers['x-access-token'];
+  const token = req.headers.authorization;
 
   if (!token) {
     return res.status(401).send({auth: false, message: 'Token not found.'});
@@ -77,9 +65,9 @@ exports.authenticate = (req, res, next) => {
 
   const publicKey = fs.readFileSync('./.public.key', 'utf8');
   jwt.verify(
-      token,
+      token.substring(7),
       publicKey,
-      {algorithm: [TOKEN_ALGORITHM_RS256]},
+      {algorithm: [TOKEN_ALGORITHM]},
       (err, decoded) => {
         if (err) {
           return res.status(401).send({auth: false, message: 'Invalid token.'});
@@ -89,3 +77,12 @@ exports.authenticate = (req, res, next) => {
       });
 };
 
+exports.genToken = (id) => {
+  const privateKey = fs.readFileSync('./.private.key', 'utf8');
+  const token = jwt.sign({id: id}, privateKey, {
+    expiresIn: TOKEN_EXPIRATION_TIME,
+    algorithm: TOKEN_ALGORITHM,
+  });
+
+  return `Bearer ${token}`;
+};
