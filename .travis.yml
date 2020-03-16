@@ -3,6 +3,10 @@ branches:
   - master
   - develop
 
+before_install:
+  - openssl genrsa -out .private.key 2048
+  - openssl rsa -in .private.key -out .public.key -pubout -outform PEM
+
 language: node_js
 node_js:
   - 10
