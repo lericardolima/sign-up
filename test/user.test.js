@@ -45,7 +45,8 @@ describe('POST /login', () => {
         })
         .end((err, res) => {
           res.should.have.status(400);
-          res.text.should.be.equal('Incorrect password');
+          res.body.should.have.property('errors')
+              .to.deep.include({'error': 'Incorrect password'});
           done();
         });
   });

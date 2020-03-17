@@ -8,6 +8,7 @@ const TOKEN_ALGORITHM = 'RS256';
 const SALT_RANDS = 12;
 
 exports.register = (req, res) => {
+  const errors = [];
   bcrypt.hash(req.body.password, SALT_RANDS)
       .then((encoded) => {
         req.body.password = encoded;
@@ -17,11 +18,11 @@ exports.register = (req, res) => {
         newUser.save((err, user) => {
           if (err && err.name == 'MongoError' &&
                 err.code == 11000 && err.keyValue.email) {
-            return res.status(409)
-                .send('Could not create user: Email is already in use.');
+            errors.push({'error': 'Email is already in use'});
+            return res.status(409).send({errors});
           } else if (err) {
-            return res.status(500)
-                .send('Something wrong happened. We\'re sorry!');
+            errors.push({'error': 'Something wrong happened. We\'re sorry!'});
+            return res.status(500).send({errors});
           }
 
           const token = this.genToken(user.id);
@@ -38,16 +39,19 @@ exports.register = (req, res) => {
 };
 
 exports.login = (req, res) => {
+  const errors = [];
   User.findOne({
     email: req.body.email,
   }, (err, user) => {
     if (!user) {
-      return res.status(404).send('User not found');
+      errors.push({'error': 'User not found'});
+      return res.status(404).send({errors});
     }
 
     bcrypt.compare(req.body.password, user.password, (error, result) => {
       if (!result) {
-        return res.status(400).send('Incorrect password');
+        errors.push({'error': 'Incorrect password'});
+        return res.status(400).send({errors});
       }
 
       const token = this.genToken(user.id);

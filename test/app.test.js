@@ -29,7 +29,7 @@ describe('GET Hello world!!', () => {
         .set('Authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.text.should.be.equal('Hello world!!');
+          res.body.should.have.property('message').eq('Hello world!!');
           done();
         });
   });
